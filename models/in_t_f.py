@@ -335,31 +335,11 @@ class ChannelAttention(nn.Module):
         y = self.fc(y).view(b, c, 1, 1)
         y = self.sigmoid(y)
         return x * y
-class ChannelAttentionC(nn.Module):
-    def __init__(self, channels, reduction=16):
-        super(ChannelAttention, self).__init__()
-        self.avg_pool = nn.AdaptiveAvgPool2d(1)  # Squeeze spatial dimension to 1x1
-
-        
-        self.conv =nn.Sequential( myconv1d(channels, channels // reduction, kernel_size=1, bias=False), nn.GELU(), myconv1d(channels // reduction, channels, kernel_size=1, bias=False))
-       
-        self.sigmoid = nn.Sigmoid()
-
-    def forward(self, x):
-        b, c, _, _ = x.size()
-        
-        y = self.avg_pool(x).view(b, c, 1)  # Shape: (batch, channels, 1)
-        
-        y = self.conv(y) 
-        
-        y = self.sigmoid(y)
-        
-        
-        y = y.view(b, c, 1, 1)
-        
-        return x * y.expand_as(x)
 
 
+    
+        
+   
 
 # Define a resnet block
 class ResnetBlock(nn.Module):
