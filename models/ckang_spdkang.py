@@ -144,20 +144,9 @@ class cheby(nn.Module):
         input1=torch.cat((input,2*input*input - 1, 4*input*input*input -(3*input*input) ),1)
         return self.conv2d(input1)
 
-class myconv(nn.Module):
-    def __init__(self, inc, outch, kernel_size=3,
-                                stride=1, padding=1, bias=True):
-        
-        super().__init__()
-        self.conv2d1 = nn.Conv2d(inc*4, inc*4, kernel_size=kernel_size,
-                                stride=stride, groups=inc*4,padding=padding, bias=bias)
-        self.conv2d2 = nn.Conv2d(inc*4, outch, kernel_size=1,
-                                stride=1, padding=0, bias=False)
 
 
-    def forward(self, input):
-        input1=torch.cat((input,torch.cos(3.14159265359*input),torch.sin(1.5*3.14159265359*input),torch.cos(2*3.14159265359*input)),1)
-        return f.gelu(self.conv2d2(self.conv2d1(input1)))
+
 
 # Defines the GAN loss which uses the Relativistic LSGAN
 def GANLoss(inputs_real, inputs_fake, is_discr):
